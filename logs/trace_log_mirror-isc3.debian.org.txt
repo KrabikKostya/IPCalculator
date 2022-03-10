@@ -1,0 +1,40 @@
+traceroute to 149.20.4.15 (149.20.4.15), 30 hops max, 60 byte packets
+ 1  XiaoQiang (192.168.31.1)  1.119 ms  1.100 ms  1.204 ms
+ 2  10.128.128.1 (10.128.128.1)  2.210 ms  2.282 ms  2.379 ms
+ 3  vl-25.sw-vn-2-1.enet.vn.ua (178.74.200.62)  14.744 ms  14.724 ms  14.702 ms
+ 4  et-0-0-0.bison.enet.vn.ua (178.74.200.205)  3.142 ms  3.374 ms  3.350 ms
+ 5  80.93.117.41.in-addr.arpa (80.93.117.41)  5.502 ms  5.842 ms  5.817 ms
+ 6  fft0-kv2.ett.ua (80.93.127.210)  31.023 ms  30.536 ms  30.671 ms
+ 7  xe-1-2-0.mpr1.fra4.de.above.net (80.81.194.26)  30.613 ms  30.574 ms  30.551 ms
+ 8  ae12.cs1.fra6.de.eth.zayo.com (64.125.26.172)  171.021 ms *  171.151 ms
+ 9  * * *
+10  * * *
+11  * * *
+12  * * *
+13  * * *
+14  * * *
+15  * * *
+16  ae6.cs1.sjc2.us.eth.zayo.com (64.125.31.219)  171.680 ms  172.167 ms  171.659 ms
+17  ae9.mpr1.pao1.us.zip.zayo.com (64.125.27.189)  171.742 ms  174.242 ms  174.157 ms
+18  isc-above-oc3.pao.isc.org (216.200.0.10)  185.875 ms  186.019 ms  192.142 ms
+19  mirror-isc3.debian.org (149.20.4.15)  204.706 ms  197.640 ms  197.678 ms
+traceroute to 149.20.4.15 (149.20.4.15), 30 hops max, 60 byte packets
+ 1  XiaoQiang (192.168.31.1)  1.193 ms  1.201 ms  1.271 ms
+ 2  10.128.128.1 (10.128.128.1)  2.897 ms  2.993 ms  3.080 ms
+ 3  vl-25.sw-vn-2-1.enet.vn.ua (178.74.200.62)  14.439 ms  14.420 ms  14.400 ms
+ 4  et-0-0-0.bison.enet.vn.ua (178.74.200.205)  3.647 ms  3.627 ms  3.608 ms
+ 5  80.93.117.41.in-addr.arpa (80.93.117.41)  5.461 ms  5.840 ms  5.821 ms
+ 6  fft0-kv2.ett.ua (80.93.127.210)  32.078 ms  30.357 ms  30.295 ms
+ 7  xe-1-2-0.mpr1.fra4.de.above.net (80.81.194.26)  29.792 ms  29.978 ms  29.956 ms
+ 8  ae12.cs1.fra6.de.eth.zayo.com (64.125.26.172)  172.345 ms  172.682 ms  172.662 ms
+ 9  * * *
+10  * * *
+11  * * *
+12  * * *
+13  * * *
+14  * * *
+15  * * *
+16  ae6.cs1.sjc2.us.eth.zayo.com (64.125.31.219)  175.805 ms  175.773 ms  172.001 ms
+17  ae9.mpr1.pao1.us.zip.zayo.com (64.125.27.189)  171.650 ms  171.859 ms  175.000 ms
+18  isc-above-oc3.pao.isc.org (216.200.0.10)  189.270 ms  189.491 ms  194.252 ms
+19  mirror-isc3.debian.org (149.20.4.15)  214.478 ms  214.450 ms  204.689 ms
