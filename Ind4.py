@@ -30,8 +30,8 @@ class IPCalculator(object):
         self._broadcast_ip = self.broadcast_ip()
         self._host_range = self.host_range()
 
-    def __repr__(self) -> None:
-        print("=" * 225)
+    def __str__(self) -> str:
+        print("="*225)
         print(f"IP: {self._ip_address}")
         print(f"Binary IP: {to_binary(self._ip_address)}")
         print(f"IP Class: {self.ip_class()}")
@@ -48,7 +48,7 @@ class IPCalculator(object):
         print(f"Last HostIP: {to_string(self._host_range[1])}")
         print(f"Binary Last HostIP: {to_binary(to_string(self._host_range[1]))}")
         print(f"Max Number Of Hosts: {self.number_of_host()}")
-        print("=" * 225)
+        return "="*225
 
     def net_mask(self) -> int:
         net_mask = 0
@@ -108,12 +108,7 @@ class IPCalculator(object):
             return "Public Network"
 
 
-def main(ip) -> None:
-    ip = IPCalculator(ip)
-    ip.__repr__()
-
-
 if __name__ == '__main__':
-    main("220.57.154.102/25")
-    main("220.57.154.102/20")
-    main("220.57.154.102/8")
+    print(IPCalculator("220.57.154.102/25"))
+    print(IPCalculator("220.57.154.102/20"))
+    print(IPCalculator("220.57.154.102/8"))
