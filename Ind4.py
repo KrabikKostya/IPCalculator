@@ -57,11 +57,11 @@ class IPCalculator(object):
             net_mask += 1
         return net_mask << (32 - self._cidr)
 
-    def broadcast_ip(self) -> int:
-        return self._network_ip + (~self._net_mask)
-
     def network_ip(self) -> int:
         return self._ip_address_value & self._net_mask
+
+    def broadcast_ip(self) -> int:
+        return self._network_ip + (~self._net_mask)
 
     def host_range(self) -> tuple:
         return self._network_ip + 1, self._broadcast_ip - 1
