@@ -88,7 +88,7 @@ class IPCalculator(object):
             return "Public Network"
 
 
-def maim(ip) -> None:
+def main(ip) -> None:
     print("=" * 225)
     print(f"IP: {ip.ip_address}")
     print(f"Binary IP: {ip.to_binary(ip.ip_address)}")
@@ -114,6 +114,6 @@ if __name__ == '__main__':
     ip2 = IPCalculator("220.57.154.102/20")
     ip3 = IPCalculator("220.57.154.102/8")
 
-    maim(ip1)
-    maim(ip2)
-    maim(ip3)
+    main(ip1)
+    main(ip2)
+    main(ip3)
