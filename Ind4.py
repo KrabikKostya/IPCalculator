@@ -1,4 +1,4 @@
-class IPCalculator(object):
+class IPCalculator:
     def __init__(self, ip_address: str) -> None:
         self.ip_address, self.cidr = ip_address.split('/')
         self.cidr = int(self.cidr)
