@@ -1,12 +1,13 @@
 class IPCalculator:
-    def __init__(self, ip_address: str) -> None:
-        self.ip_address, self.cidr = ip_address.split('/')
-        self.cidr = int(self.cidr)
-        self.ip_address_value = self.to_number(self.ip_address)
-        self.net_mask = self.net_mask()
-        self.network_ip = self.network_ip()
-        self.broadcast_ip = self.broadcast_ip()
-        self.host_range = self.host_range()
+    def __init__(self) -> None:
+        self.class_A_mask = 0b0000 << 28
+        self.class_B_mask = 0b1000 << 28
+        self.class_C_mask = 0b1100 << 28
+        self.class_D_mask = 0b1110 << 28
+        self.class_E_mask = 0b1111 << 28
+        self.private_class_A_mask = 0b00001010 << 24
+        self.private_class_B_mask = 0b10101100 << 24
+        self.private_class_C_mask = 0b1100000010101000 << 16
 
     @staticmethod
     def to_number(string: str) -> int:
@@ -30,90 +31,74 @@ class IPCalculator:
         res = list(map(int, string.split('.')))
         return ".".join(list(map(lambda x: bin(x)[2:].zfill(8), res)))
 
-    def net_mask(self) -> int:
+    @staticmethod
+    def net_mask(cidr: int) -> int:
         net_mask = 0
-        for i in range(self.cidr):
+        for i in range(cidr):
             net_mask <<= 1
             net_mask += 1
-        return net_mask << (32 - self.cidr)
+        return net_mask << (32 - cidr)
 
-    def network_ip(self) -> int:
-        return self.ip_address_value & self.net_mask
+    @staticmethod
+    def number_of_host(cidr: int) -> int:
+        return 2 ** (32 - cidr) - 2
 
-    def broadcast_ip(self) -> int:
-        return self.network_ip + (~self.net_mask)
+    def network_ip(self, ip_address: int, cidr: int) -> int:
+        return ip_address & self.net_mask(cidr)
 
-    def host_range(self) -> tuple:
-        return self.network_ip + 1, self.broadcast_ip - 1
+    def broadcast_ip(self, ip_address: int, cidr: int) -> int:
+        return self.network_ip(ip_address, cidr) + (~self.net_mask(cidr))
 
-    def number_of_host(self) -> int:
-        return 2 ** (32 - self.cidr) - 2
+    def first_host_ip(self, ip_address: int, cidr: int) -> int:
+        return self.network_ip(ip_address, cidr) + 1
 
-    def ip_class(self) -> str:
-        class_A_min = self.to_number("1.0.0.0")
-        class_A_max = self.to_number("126.0.0.0")
-        class_B_min = self.to_number("128.0.0.0")
-        class_B_max = self.to_number("191.255.0.0")
-        class_C_min = self.to_number("192.0.0.0")
-        class_C_max = self.to_number("223.255.255.0")
-        class_D_min = self.to_number("224.0.0.0")
-        class_D_max = self.to_number("239.255.255.255")
-        class_E_min = self.to_number("240.0.0.0")
-        class_E_max = self.to_number("247.255.255.255")
-        if class_A_min <= self.ip_address_value <= class_A_max:
-            return "A"
-        elif class_B_min <= self.ip_address_value <= class_B_max:
-            return "B"
-        elif class_C_min <= self.ip_address_value <= class_C_max:
-            return "C"
-        elif class_D_min <= self.ip_address_value <= class_D_max:
-            return "D"
-        elif class_E_min <= self.ip_address_value <= class_E_max:
+    def last_host_ip(self, ip_address: int, cidr: int) -> int:
+        return self.broadcast_ip(ip_address, cidr) - 1
+
+    def ip_class(self, ip_address) -> str:
+        if (ip_address & self.class_E_mask) == self.class_E_mask:
             return "E"
+        if (ip_address & self.class_D_mask) == self.class_D_mask:
+            return "D"
+        if (ip_address & self.class_C_mask) == self.class_C_mask:
+            return "C"
+        if (ip_address & self.class_B_mask) == self.class_B_mask:
+            return "B"
+        if (ip_address & self.class_A_mask) == self.class_A_mask:
+            return "A"
 
-    def ip_type(self) -> str:
-        private_class_A_min = self.to_number("10.0.0.0")
-        private_class_A_max = self.to_number("10.255.255.255")
-        private_class_B_min = self.to_number("172.16.0.0")
-        private_class_B_max = self.to_number("172.31.255.255")
-        private_class_C_min = self.to_number("192.168.0.0")
-        private_class_C_max = self.to_number("192.168.255.255")
-        if private_class_A_min <= self.ip_address_value <= private_class_A_max:
+    def ip_type(self, ip_address) -> str:
+        if (ip_address & self.private_class_C_mask) == self.private_class_C_mask:
             return "Private Network"
-        elif private_class_B_min <= self.ip_address_value <= private_class_B_max:
+        if (ip_address & self.private_class_B_mask) == self.private_class_B_mask:
             return "Private Network"
-        elif private_class_C_min <= self.ip_address_value <= private_class_C_max:
+        if (ip_address & self.private_class_A_mask) == self.private_class_A_mask:
             return "Private Network"
-        else:
-            return "Public Network"
+        return "Public Network"
 
 
-def main(ip) -> None:
+def main(class_object: IPCalculator(), ip: str, cidr: int) -> None:
+    ip_int = class_object.to_number(ip)
     print("=" * 225)
-    print(f"IP: {ip.ip_address}")
-    print(f"Binary IP: {ip.to_binary(ip.ip_address)}")
-    print(f"IP Class: {ip.ip_class()}")
-    print(f"IP Type: {ip.ip_type()}")
-    print(f"Prefix: {ip.cidr}")
-    print(f"Netmask: {ip.to_string(ip.net_mask)}")
-    print(f"Binary Netmask: {ip.to_binary(ip.to_string(ip.net_mask))}")
-    print(f"Network Address: {ip.to_string(ip.network_ip)}")
-    print(f"Binary Network Address: {ip.to_binary(ip.to_string(ip.network_ip))}")
-    print(f"Subnet Broadcast Address: {ip.to_string(ip.broadcast_ip)}")
-    print(f"Binary Subnet Broadcast Address: {ip.to_binary(ip.to_string(ip.broadcast_ip))}")
-    print(f"First HostIP: {ip.to_string(ip.host_range[0])}")
-    print(f"Binary First HostIP: {ip.to_binary(ip.to_string(ip.host_range[0]))}")
-    print(f"Last HostIP: {ip.to_string(ip.host_range[1])}")
-    print(f"Binary Last HostIP: {ip.to_binary(ip.to_string(ip.host_range[1]))}")
-    print(f"Max Number Of Hosts: {ip.number_of_host()}")
-    print("=" * 225)
+    print(f"IP: {ip}")
+    print(f"Binary IP: {class_object.to_binary(ip)}")
+    print(f"IP Class: {class_object.ip_class(ip_int)}")
+    print(f"IP Type: {class_object.ip_type(ip_int)}")
+    print(f"Prefix: {cidr}")
+    print(f"Netmask: {class_object.to_string(class_object.net_mask(cidr))}")
+    print(f"Binary Netmask: {class_object.to_binary(class_object.to_string(class_object.net_mask(cidr)))}")
+    print(f"Network Address: {class_object.to_string(class_object.network_ip(ip_int, cidr))}")
+    print(f"Binary Network Address: {class_object.to_binary(class_object.to_string(class_object.network_ip(ip_int, cidr)))}")
+    print(f"Subnet Broadcast Address: {class_object.to_string(class_object.broadcast_ip(ip_int, cidr))}")
+    print(f"Binary Subnet Broadcast Address: {class_object.to_binary(class_object.to_string(class_object.broadcast_ip(ip_int, cidr)))}")
+    print(f"First HostIP: {class_object.to_string(class_object.first_host_ip(ip_int, cidr))}")
+    print(f"Binary First HostIP: {class_object.to_binary(class_object.to_string(class_object.first_host_ip(ip_int, cidr)))}")
+    print(f"Last HostIP: {class_object.to_string(class_object.last_host_ip(ip_int, cidr))}")
+    print(f"Binary Last HostIP: {class_object.to_binary(class_object.to_string(class_object.last_host_ip(ip_int, cidr)))}")
+    print(f"Max Number Of Hosts: {class_object.number_of_host(cidr)}")
 
 
 if __name__ == '__main__':
-    ip1 = IPCalculator("220.57.154.102/25")
-    ip2 = IPCalculator("220.57.154.102/20")
-    ip3 = IPCalculator("220.57.154.102/8")
-
-    main(ip1)
-    main(ip2)
-    main(ip3)
+    main(IPCalculator(), "220.57.154.102", 25)
+    main(IPCalculator(), "220.57.154.102", 20)
+    main(IPCalculator(), "220.57.154.102", 8)
