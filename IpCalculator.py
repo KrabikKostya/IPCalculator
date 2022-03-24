@@ -96,9 +96,4 @@ def main(class_object: IPCalculator(), ip: str, cidr: int) -> None:
     print(f"Last HostIP: {class_object.to_string(class_object.last_host_ip(ip_int, cidr))}")
     print(f"Binary Last HostIP: {class_object.to_binary(class_object.to_string(class_object.last_host_ip(ip_int, cidr)))}")
     print(f"Max Number Of Hosts: {class_object.number_of_host(cidr)}")
-
-
-if __name__ == '__main__':
-    main(IPCalculator(), "220.57.154.102", 25)
-    main(IPCalculator(), "220.57.154.102", 20)
-    main(IPCalculator(), "220.57.154.102", 8)
+    print("=" * 225)
